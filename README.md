@@ -1,6 +1,6 @@
 <div align="center">
 
-# مرحبا • হ্যালো • Hello, I'm Abdul Kuddus 👋
+# مرحبا • হ্যালো • Hello, I'm Md. Abdul Kuddus 👋
 
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&pause=1000&color=00D9FF&center=true&vCenter=true&width=600&lines=Full-Stack+Web+Developer;Freelance+UI%2FUX+Designer;Chrome+Extension+Builder;Always+Learning+New+Things!" alt="Typing SVG" />
 
