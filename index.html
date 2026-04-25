@@ -1,676 +1,904 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Abdul Kuddus — Web Developer</title>
-  <!-- <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/> -->
-  <link rel="shortcut icon" href="https://abdulkuddusbd.github.io/logo.png" type="image/x-icon" />
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --bg: #07090f;
-      --surface: #0d1117;
-      --card: #111827;
-      --border: #1f2937;
-      --cyan: #00d9ff;
-      --cyan-dim: #00d9ff22;
-      --green: #00ffaa;
-      --text: #e2e8f0;
-      --muted: #6b7280;
-      --font-head: 'Helvetica', sans-serif;
-      --font-body: 'Arial', 'Helvetica', sans-serif;
-      
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 16px;
-      line-height: 1.7;
-      overflow-x: hidden;
-    }
-
-    /* ── NOISE OVERLAY ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: .4;
-    }
-
-    /* ── GRID BG ── */
-    .grid-bg {
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,217,255,.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,217,255,.04) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.2rem 2.5rem;
-      background: rgba(7,9,15,.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .logo {
-      font-family: var(--font-head);
-      font-size: 1.3rem;
-      font-weight: 800;
-      letter-spacing: -.02em;
-      color: var(--cyan);
-    }
-    .logo span { color: var(--text); }
-
-    nav ul {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
-
-    nav a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: .875rem;
-      font-weight: 500;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-      transition: color .2s;
-    }
-    nav a:hover { color: var(--cyan); }
-
-    /* ── HERO ── */
-    .hero {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 6rem 2.5rem 4rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .hero-inner { max-width: 700px; }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      background: var(--cyan-dim);
-      border: 1px solid rgba(0,217,255,.3);
-      color: var(--cyan);
-      font-size: .8rem;
-      font-weight: 600;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      padding: .35rem 1rem;
-      border-radius: 2rem;
-      margin-bottom: 2rem;
-      animation: fadeDown .6s ease both;
-    }
-
-    .badge::before {
-      content: '';
-      width: 7px; height: 7px;
-      background: var(--cyan);
-      border-radius: 50%;
-      animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0%,100% { opacity: 1; transform: scale(1); }
-      50% { opacity: .4; transform: scale(1.4); }
-    }
-
-    .hero h1 {
-      font-family: var(--font-head);
-      font-size: clamp(2.8rem, 6vw, 5rem);
-      font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: -.03em;
-      margin-bottom: 1.5rem;
-      animation: fadeDown .7s .1s ease both;
-    }
-
-    .hero h1 .line2 { color: var(--cyan); }
-
-    .hero p {
-      font-size: 1.125rem;
-      color: var(--muted);
-      max-width: 520px;
-      margin-bottom: 2.5rem;
-      animation: fadeDown .7s .2s ease both;
-      font-weight: 300;
-    }
-
-    .hero-btns {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      animation: fadeDown .7s .3s ease both;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      padding: .8rem 1.8rem;
-      border-radius: .5rem;
-      font-size: .95rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all .2s;
-      cursor: pointer;
-    }
-
-    .btn-primary {
-      background: var(--cyan);
-      color: #000;
-    }
-    .btn-primary:hover {
-      background: #fff;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(0,217,255,.35);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .btn-ghost:hover {
-      border-color: var(--cyan);
-      color: var(--cyan);
-      transform: translateY(-2px);
-    }
-
-    /* ── GLOW BLOB ── */
-    .glow {
-      position: absolute;
-      top: 20%; right: -10%;
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(0,217,255,.12) 0%, transparent 70%);
-      pointer-events: none;
-      animation: drift 8s ease-in-out infinite alternate;
-    }
-
-    @keyframes drift {
-      from { transform: translate(0,0); }
-      to   { transform: translate(-30px, 40px); }
-    }
-
-    /* ── SECTIONS ── */
-    section {
-      position: relative;
-      z-index: 1;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 5rem 2.5rem;
-    }
-
-    .section-label {
-      font-size: .75rem;
-      font-weight: 700;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      color: var(--cyan);
-      margin-bottom: .75rem;
-    }
-
-    .section-title {
-      font-family: var(--font-head);
-      font-size: clamp(1.8rem, 3vw, 2.8rem);
-      font-weight: 800;
-      letter-spacing: -.02em;
-      margin-bottom: 1rem;
-    }
-
-    .section-desc {
-      color: var(--muted);
-      max-width: 500px;
-      margin-bottom: 3.5rem;
-      font-weight: 300;
-    }
-
-    /* ── SKILLS ── */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 1rem;
-    }
-
-    .skill-item {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: .75rem;
-      padding: 1.2rem 1rem;
-      text-align: center;
-      transition: all .2s;
-      cursor: default;
-    }
-
-    .skill-item:hover {
-      border-color: var(--cyan);
-      transform: translateY(-4px);
-      box-shadow: 0 8px 30px rgba(0,217,255,.15);
-    }
-
-    .skill-icon { font-size: 2rem; margin-bottom: .5rem; }
-    .skill-name { font-size: .8rem; font-weight: 600; color: var(--muted); }
-
-    /* ── PROJECTS ── */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .project-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 1rem;
-      padding: 1.75rem;
-      transition: all .3s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .project-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--cyan), var(--green));
-      transform: scaleX(0);
-      transition: transform .3s;
-    }
-
-    .project-card:hover {
-      border-color: rgba(0,217,255,.4);
-      transform: translateY(-6px);
-      box-shadow: 0 20px 60px rgba(0,0,0,.4);
-    }
-
-    .project-card:hover::before { transform: scaleX(1); }
-
-    .project-tag {
-      display: inline-block;
-      background: var(--cyan-dim);
-      color: var(--cyan);
-      font-size: .7rem;
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      padding: .2rem .7rem;
-      border-radius: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    .project-card h3 {
-      font-family: var(--font-head);
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: .75rem;
-    }
-
-    .project-card p {
-      color: var(--muted);
-      font-size: .9rem;
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-      font-weight: 300;
-    }
-
-    .project-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .tech-stack {
-      display: flex;
-      gap: .4rem;
-      flex-wrap: wrap;
-    }
-
-    .tech-badge {
-      background: var(--surface);
-      color: var(--muted);
-      font-size: .7rem;
-      padding: .2rem .55rem;
-      border-radius: .3rem;
-      border: 1px solid var(--border);
-    }
-
-    .project-link {
-      color: var(--cyan);
-      text-decoration: none;
-      font-size: .85rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: .3rem;
-      transition: gap .2s;
-    }
-    .project-link:hover { gap: .6rem; }
-
-    /* ── ABOUT ── */
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: start;
-    }
-
-    @media (max-width: 768px) {
-      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
-    }
-
-    .about-text p {
-      color: var(--muted);
-      margin-bottom: 1.25rem;
-      font-weight: 300;
-      line-height: 1.8;
-    }
-
-    .info-list { list-style: none; }
-    .info-list li {
-      display: flex;
-      gap: 1rem;
-      padding: .9rem 0;
-      border-bottom: 1px solid var(--border);
-      font-size: .9rem;
-    }
-    .info-list li:last-child { border-bottom: none; }
-    .info-key { color: var(--muted); font-weight: 500; min-width: 100px; }
-    .info-val { color: var(--text); font-weight: 500; }
-
-    /* ── CONTACT ── */
-    .contact-inner {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 1.5rem;
-      padding: 3.5rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .contact-inner::before {
-      content: '';
-      position: absolute;
-      top: -100px; left: 50%;
-      transform: translateX(-50%);
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(0,217,255,.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .contact-inner h2 {
-      font-family: var(--font-head);
-      font-size: 2.5rem;
-      font-weight: 800;
-      margin-bottom: 1rem;
-    }
-
-    .contact-inner p {
-      color: var(--muted);
-      max-width: 440px;
-      margin: 0 auto 2.5rem;
-      font-weight: 300;
-    }
-
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-top: 2rem;
-    }
-
-    .social-link {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      padding: .6rem 1.3rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: .5rem;
-      color: var(--muted);
-      text-decoration: none;
-      font-size: .875rem;
-      font-weight: 500;
-      transition: all .2s;
-    }
-
-    .social-link:hover {
-      border-color: var(--cyan);
-      color: var(--cyan);
-      transform: translateY(-2px);
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 2.5rem;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      font-size: .85rem;
-    }
-
-    footer span { color: var(--cyan); }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity .6s ease, transform .6s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── SCROLLBAR ── */
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
-
-    @media (max-width: 640px) {
-      nav ul { display: none; }
-      .hero h1 { font-size: 2.4rem; }
-      .contact-inner { padding: 2rem 1.5rem; }
-    }
-  </style>
-</head>
-<body>
-
-<div class="grid-bg"></div>
-
-<!-- NAV -->
-<nav>
-  <div class="logo">Abdul<span> Kuddus</span></div>
-  <ul>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="glow"></div>
-  <div class="hero-inner">
-    <div class="badge">Available for Freelance Work</div>
-    <h1>
-      Web Developer<br>
-      <span class="line2">&amp; UI Designer.</span>
-    </h1>
-    <p>
-      আমি একজন Level-3 Freelance Web Developer। Clean code এবং Beautiful design দিয়ে আপনার ডিজিটাল উপস্থিতি তৈরি করতে সাহায্য করি।
-    </p>
-    <div class="hero-btns">
-      <a href="#projects" class="btn btn-primary">View Projects →</a>
-      <a href="#contact" class="btn btn-ghost">Get In Touch</a>
-    </div>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section id="skills">
-  <div class="reveal">
-    <div class="section-label">Expertise</div>
-    <h2 class="section-title">Tech Stack</h2>
-    <p class="section-desc">আমি যে technologies নিয়ে কাজ করি</p>
-  </div>
-  <div class="skills-grid reveal">
-    <div class="skill-item"><div class="skill-icon">🌐</div><div class="skill-name">HTML5</div></div>
-    <div class="skill-item"><div class="skill-icon">🎨</div><div class="skill-name">CSS3</div></div>
-    <div class="skill-item"><div class="skill-icon">⚡</div><div class="skill-name">JavaScript</div></div>
-    <div class="skill-item"><div class="skill-icon">📦</div><div class="skill-name">Bootstrap</div></div>
-    <div class="skill-item"><div class="skill-icon">🔧</div><div class="skill-name">Git</div></div>
-    <div class="skill-item"><div class="skill-icon">🐙</div><div class="skill-name">GitHub</div></div>
-    <div class="skill-item"><div class="skill-icon">🧩</div><div class="skill-name">Chrome API</div></div>
-    <div class="skill-item"><div class="skill-icon">🎭</div><div class="skill-name">Figma</div></div>
-    <div class="skill-item"><div class="skill-icon">💻</div><div class="skill-name">VS Code</div></div>
-    <div class="skill-item"><div class="skill-icon">📱</div><div class="skill-name">Responsive</div></div>
-  </div>
-</section>
-
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="reveal">
-    <div class="section-label">Work</div>
-    <h2 class="section-title">Featured Projects</h2>
-    <p class="section-desc">আমার উল্লেখযোগ্য কাজসমূহ</p>
-  </div>
-  <div class="projects-grid">
-    <div class="project-card reveal">
-      <div class="project-tag">Chrome Extension</div>
-      <h3>🛡️ SmartBrowse — Ad Blocker Pro</h3>
-      <p>Bengali-UI সহ পূর্ণাঙ্গ Chrome Extension। Ad Blocking, URL Navigation, Bookmarks, History এবং Quick-Access shortcuts সহ।</p>
-      <div class="project-footer">
-        <div class="tech-stack">
-          <span class="tech-badge">JavaScript</span>
-          <span class="tech-badge">Chrome API</span>
-          <span class="tech-badge">CSS</span>
-        </div>
-        <a href="https://github.com/AbdulKuddusBD" class="project-link">View →</a>
-      </div>
-    </div>
-    <div class="project-card reveal">
-      <div class="project-tag">Portfolio</div>
-      <h3>🌐 Personal Portfolio Website</h3>
-      <p>আধুনিক ডিজাইনের প্রফেশনাল পোর্টফোলিও ওয়েবসাইট। Responsive layout এবং smooth animations সহ।</p>
-      <div class="project-footer">
-        <div class="tech-stack">
-          <span class="tech-badge">HTML</span>
-          <span class="tech-badge">CSS</span>
-          <span class="tech-badge">JS</span>
-        </div>
-        <a href="https://github.com/AbdulKuddusBD/AbdulKuddus-personal-portfolio" class="project-link">View →</a>
-      </div>
-    </div>
-    <div class="project-card reveal">
-      <div class="project-tag">Full Stack</div>
-      <h3>👥 Team Project — Full Stack</h3>
-      <p>একটি সম্পূর্ণ collaborative web application। Frontend থেকে backend পর্যন্ত পূর্ণাঙ্গ solution।</p>
-      <div class="project-footer">
-        <div class="tech-stack">
-          <span class="tech-badge">HTML</span>
-          <span class="tech-badge">CSS</span>
-          <span class="tech-badge">JS</span>
-        </div>
-        <a href="https://github.com/AbdulKuddusBD/Team-Project" class="project-link">View →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="reveal">
-    <div class="section-label">Who I Am</div>
-    <h2 class="section-title">About Me</h2>
-  </div>
-  <div class="about-grid">
-    <div class="about-text reveal">
-      <p>আমি Md. Abdul Kuddus — বাংলাদেশের ময়মনসিংহ জেলার একজন Freelance Web Developer। Level-3 Freelancer হিসেবে আমি professional web design ও development এ কাজ করি।</p>
-      <p>Web Development এর পাশাপাশি আমি ইসলামিক শিক্ষায় Dawrah-e-Hadith সম্পন্ন করেছি — এই দুটি পথ আমার চিন্তাকে সমৃদ্ধ করেছে।</p>
-      <p>আমি বিশ্বাস করি ভালো code হলো সেটা যা clean, purposeful এবং দীর্ঘস্থায়ী।</p>
-    </div>
-    <div class="reveal">
-      <ul class="info-list">
-        <li><span class="info-key">নাম</span><span class="info-val">Md. Abdul Kuddus</span></li>
-        <li><span class="info-key">অবস্থান</span><span class="info-val">Mymensingh, Bangladesh 🇧🇩</span></li>
-        <li><span class="info-key">পেশা</span><span class="info-val">Freelance Web Developer</span></li>
-        <li><span class="info-key">স্তর</span><span class="info-val">Level-3 Freelancer</span></li>
-        <li><span class="info-key">ভাষা</span><span class="info-val">Bengali, English, Arabic</span></li>
-        <li><span class="info-key">Status</span><span class="info-val" style="color:var(--green)">✅ Available</span></li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="contact-inner reveal">
-    <h2>কাজ করতে আগ্রহী?</h2>
-    <p>আপনার project নিয়ে কথা বলুন। আমি সবসময় নতুন সুযোগের জন্য প্রস্তুত।</p>
-    <a href="mailto:abdulkuddusbd.2026@gmail.com" class="btn btn-primary">✉️ Email করুন</a>
-    <div class="social-links">
-      <a href="https://github.com/AbdulKuddusBD" class="social-link">🐙 GitHub</a>
-      <a href="https://linkedin.com/in/abdulkuddusbd" class="social-link">💼 LinkedIn</a>
-      <a href="https://facebook.com/hmabdulkuddus01" class="social-link">📘 Facebook</a>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <p>Built with ❤️ by <span>Abdul Kuddus</span> · Bangladesh 🇧🇩</p>
-</footer>
-
-<script>
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 80);
-        observer.unobserve(e.target);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Abdul Kuddus — Web Developer</title>
+    <!-- Bootstrap 5 CSS (full framework) -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Optional Bootstrap Icons (for social icons) -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://abdulkuddusbd.github.io/logo.png"
+      type="image/x-icon"
+    />
+    <style>
+      /* Minimal custom overrides — no core styling rewritten, only tiny tweaks to match original mood */
+      :root {
+        --bg: #07090f;
+        --surface: #0d1117;
+        --card: #111827;
+        --border: #1f2937;
+        --cyan: #00d9ff;
+        --cyan-dim: #00d9ff22;
+        --green: #00ffaa;
+        --text: #e2e8f0;
+        --muted: #6b7280;
       }
-    });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
-</script>
-</body>
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          "Arial",
+          sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* noise & grid overlay to match original aesthetic */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.4;
+      }
+
+      .grid-bg {
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(0, 217, 255, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 217, 255, 0.04) 1px, transparent 1px);
+        background-size: 60px 60px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* override Bootstrap link colors to match theme */
+      a {
+        text-decoration: none;
+      }
+
+      /* custom navbar background with blur */
+      .navbar {
+        background: rgb(8, 11, 29);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+        padding: 0.8rem 2rem;
+        z-index: 1030;
+      }
+
+      .navbar-brand {
+        font-family: inherit;
+        font-size: 1.3rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--cyan) !important;
+      }
+      .navbar-brand span {
+        color: var(--text);
+      }
+      .nav-link {
+        color: var(--muted) !important;
+        font-size: 0.875rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+      .nav-link:hover {
+        color: var(--cyan) !important;
+        border-bottom: 2px solid !important;
+      }
+
+      /* live time badge inside nav */
+      .bd-time-badge {
+        background: var(--cyan-dim);
+        border: 1px solid rgba(0, 217, 255, 0.3);
+        color: var(--cyan);
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.25rem 0.85rem;
+        border-radius: 2rem;
+        margin-left: 1rem;
+        white-space: nowrap;
+      }
+
+      /* hero section */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 6rem 0 4rem;
+        position: relative;
+      }
+
+      .badge-custom {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--cyan-dim);
+        border: 1px solid rgba(0, 217, 255, 0.3);
+        color: var(--cyan);
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.35rem 1rem;
+        border-radius: 2rem;
+        margin-bottom: 2rem;
+      }
+      .badge-custom::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        background: var(--cyan);
+        border-radius: 50%;
+        animation: pulse 1.5s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.4;
+          transform: scale(1.4);
+        }
+      }
+
+      .hero h1 {
+        font-size: clamp(2.8rem, 6vw, 5rem);
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+        margin-bottom: 1.5rem;
+      }
+      .hero h1 .line2 {
+        color: var(--cyan);
+      }
+      .hero p {
+        font-size: 1.125rem;
+        color: var(--muted);
+        max-width: 520px;
+        margin-bottom: 2.5rem;
+        font-weight: 300;
+      }
+
+      /* buttons */
+      .btn-primary-custom {
+        background: var(--cyan);
+        color: #000;
+        border: none;
+        padding: 0.8rem 1.8rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+      .btn-primary-custom:hover {
+        background: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(0, 217, 255, 0.35);
+        color: #000;
+      }
+      .btn-ghost-custom {
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--border);
+        padding: 0.8rem 1.8rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+      .btn-ghost-custom:hover {
+        border-color: var(--cyan);
+        color: var(--cyan);
+        transform: translateY(-2px);
+      }
+
+      /* glow blob */
+      .glow {
+        position: absolute;
+        top: 20%;
+        right: -5%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(
+          circle,
+          rgba(0, 217, 255, 0.12) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+        animation: drift 8s ease-in-out infinite alternate;
+      }
+      @keyframes drift {
+        from {
+          transform: translate(0, 0);
+        }
+        to {
+          transform: translate(-30px, 40px);
+        }
+      }
+
+      /* section headers */
+      .section-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--cyan);
+        margin-bottom: 0.75rem;
+      }
+      .section-title {
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        margin-bottom: 1rem;
+      }
+      .section-desc {
+        color: var(--muted);
+        max-width: 500px;
+        margin-bottom: 3rem;
+        font-weight: 300;
+      }
+
+      /* skill cards using Bootstrap cards */
+      .skill-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 0.75rem;
+        padding: 1.2rem 1rem;
+        text-align: center;
+        transition: all 0.2s;
+        height: 100%;
+      }
+      .skill-card:hover {
+        border-color: var(--cyan);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 30px rgba(0, 217, 255, 0.15);
+      }
+      .skill-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+      .skill-name {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--muted);
+      }
+
+      /* project cards */
+      .project-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 1rem;
+        padding: 1.75rem;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+      }
+      .project-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--cyan), var(--green));
+        transform: scaleX(0);
+        transition: transform 0.3s;
+      }
+      .project-card:hover {
+        border-color: rgba(0, 217, 255, 0.4);
+        transform: translateY(-6px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      }
+      .project-card:hover::before {
+        transform: scaleX(1);
+      }
+      .project-tag {
+        display: inline-block;
+        background: var(--cyan-dim);
+        color: var(--cyan);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.2rem 0.7rem;
+        border-radius: 2rem;
+        margin-bottom: 1rem;
+      }
+      .project-card h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+      }
+      .project-card p {
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        font-weight: 300;
+      }
+      .tech-badge {
+        background: var(--surface);
+        color: var(--muted);
+        font-size: 0.7rem;
+        padding: 0.2rem 0.55rem;
+        border-radius: 0.3rem;
+        border: 1px solid var(--border);
+        margin-right: 0.3rem;
+      }
+      .project-link {
+        color: var(--cyan);
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        transition: gap 0.2s;
+      }
+      .project-link:hover {
+        gap: 0.6rem;
+        color: var(--cyan);
+      }
+
+      /* about section */
+      .about-text p {
+        color: var(--muted);
+        margin-bottom: 1.25rem;
+        font-weight: 300;
+        line-height: 1.8;
+      }
+      .info-list {
+        list-style: none;
+        padding-left: 0;
+      }
+      .info-list li {
+        display: flex;
+        gap: 1rem;
+        padding: 0.9rem 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.9rem;
+      }
+      .info-list li:last-child {
+        border-bottom: none;
+      }
+      .info-key {
+        color: var(--muted);
+        font-weight: 500;
+        min-width: 100px;
+      }
+      .info-val {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      /* contact card */
+      .contact-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 1.5rem;
+        padding: 3rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .contact-card::before {
+        content: "";
+        position: absolute;
+        top: -100px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(0, 217, 255, 0.08) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .contact-card h2 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+      }
+      .contact-card p {
+        color: var(--muted);
+        max-width: 440px;
+        margin: 0 auto 2rem;
+        font-weight: 300;
+      }
+      .social-link-bs {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.3rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 0.5rem;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.2s;
+      }
+      .social-link-bs:hover {
+        border-color: var(--cyan);
+        color: var(--cyan);
+        transform: translateY(-2px);
+      }
+
+      footer {
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.85rem;
+        padding: 2rem;
+        text-align: center;
+      }
+      footer span {
+        color: var(--cyan);
+      }
+
+      /* reveal animation */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition:
+          opacity 0.6s ease,
+          transform 0.6s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* scrollbar */
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 99px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--cyan);
+      }
+
+      /* responsive adjustments */
+      @media (max-width: 768px) {
+        .navbar-collapse {
+          background: rgba(7, 9, 15, 0.95);
+          padding: 1rem;
+          border-radius: 1rem;
+          margin-top: 1rem;
+        }
+        .bd-time-badge {
+          margin-left: 0;
+          margin-top: 0.5rem;
+          display: inline-block;
+        }
+      }
+      #btn-back-to-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: none; /* Hidden by default */
+        z-index: 1000;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-bg"></div>
+
+    <!-- Bootstrap Navbar with live time integrated -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">Abdul<span> Kuddus</span></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon" style="filter: invert(1)"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-center gap-2">
+            <li class="nav-item">
+              <a class="nav-link" href="#home">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#skills">Skills</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#projects">Projects</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Contact</a>
+            </li>
+            <li class="nav-item">
+              <span id="bd-time" class="bd-time-badge">--:--:--</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="container position-relative">
+        <div class="glow"></div>
+        <div class="row justify-content-start">
+          <div class="col-lg-8">
+            <div class="badge-custom">Available for Freelance Work</div>
+            <h1>
+              Web Developer<br />
+              <span class="line2">&amp; UI Designer.</span>
+            </h1>
+            <p>
+              আমি একজন Level-3 Freelance Web Developer। Clean code এবং Beautiful
+              design দিয়ে আপনার ডিজিটাল উপস্থিতি তৈরি করতে সাহায্য করি।
+            </p>
+            <div class="d-flex flex-wrap gap-3">
+              <a href="#projects" class="btn btn-primary-custom"
+                >View Projects →</a
+              >
+              <a href="#contact" class="btn btn-ghost-custom">Get In Touch</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section (Bootstrap grid) -->
+    <section id="skills" class="py-5">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-label">Expertise</div>
+          <h2 class="section-title">Tech Stack</h2>
+          <p class="section-desc">আমি যে technologies নিয়ে কাজ করি</p>
+        </div>
+        <div class="row g-4 reveal">
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="skill-card">
+              <div class="skill-icon">🌐</div>
+              <div class="skill-name">HTML5</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="skill-card">
+              <div class="skill-icon">🎨</div>
+              <div class="skill-name">CSS3</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="skill-card">
+              <div class="skill-icon">⚡</div>
+              <div class="skill-name">JavaScript</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="skill-card">
+              <div class="skill-icon">📦</div>
+              <div class="skill-name">Bootstrap</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="skill-card">
+              <div class="skill-icon">🔧</div>
+              <div class="skill-name">Git</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="skill-card">
+              <div class="skill-icon">🐙</div>
+              <div class="skill-name">GitHub</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="skill-card">
+              <div class="skill-icon">🧩</div>
+              <div class="skill-name">Chrome API</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="skill-card">
+              <div class="skill-icon">🎭</div>
+              <div class="skill-name">Figma</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="skill-card">
+              <div class="skill-icon">💻</div>
+              <div class="skill-name">VS Code</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="skill-card">
+              <div class="skill-icon">📱</div>
+              <div class="skill-name">Responsive</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-5">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-label">Work</div>
+          <h2 class="section-title">Featured Projects</h2>
+          <p class="section-desc">আমার উল্লেখযোগ্য কাজসমূহ</p>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-4 reveal">
+            <div class="project-card">
+              <div class="project-tag">Chrome Extension</div>
+              <h3>🛡️ SmartBrowse — Ad Blocker Pro</h3>
+              <p>
+                Bengali-UI সহ পূর্ণাঙ্গ Chrome Extension। Ad Blocking, URL
+                Navigation, Bookmarks, History এবং Quick-Access shortcuts সহ।
+              </p>
+              <div
+                class="d-flex justify-content-between align-items-center flex-wrap"
+              >
+                <div class="mb-2">
+                  <span class="tech-badge">JavaScript</span>
+                  <span class="tech-badge">Chrome API</span>
+                  <span class="tech-badge">CSS</span>
+                </div>
+                <a href="https://github.com/AbdulKuddusBD" class="project-link"
+                  >View →</a
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 reveal">
+            <div class="project-card">
+              <div class="project-tag">Portfolio</div>
+              <h3>🌐 Personal Portfolio Website</h3>
+              <p>
+                আধুনিক ডিজাইনের প্রফেশনাল পোর্টফোলিও ওয়েবসাইট। Responsive
+                layout এবং smooth animations সহ।
+              </p>
+              <div
+                class="d-flex justify-content-between align-items-center flex-wrap"
+              >
+                <div class="mb-2">
+                  <span class="tech-badge">HTML</span>
+                  <span class="tech-badge">CSS</span>
+                  <span class="tech-badge">JS</span>
+                </div>
+                <a
+                  href="https://github.com/AbdulKuddusBD/AbdulKuddus-personal-portfolio"
+                  class="project-link"
+                  >View →</a
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 reveal">
+            <div class="project-card">
+              <div class="project-tag">Full Stack</div>
+              <h3>👥 Team Project — Full Stack</h3>
+              <p>
+                একটি সম্পূর্ণ collaborative web application। Frontend থেকে
+                backend পর্যন্ত পূর্ণাঙ্গ solution।
+              </p>
+              <div
+                class="d-flex justify-content-between align-items-center flex-wrap"
+              >
+                <div class="mb-2">
+                  <span class="tech-badge">HTML</span>
+                  <span class="tech-badge">CSS</span>
+                  <span class="tech-badge">JS</span>
+                </div>
+                <a
+                  href="https://github.com/AbdulKuddusBD/Team-Project"
+                  class="project-link"
+                  >View →</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-label">Who I Am</div>
+          <h2 class="section-title">About Me</h2>
+        </div>
+        <div class="row g-5">
+          <div class="col-lg-6 reveal">
+            <div class="about-text">
+              <p>
+                আমি Md. Abdul Kuddus — বাংলাদেশের ময়মনসিংহ জেলার একজন Freelance
+                Web Developer। Level-3 Freelancer হিসেবে আমি professional web
+                design ও development এ কাজ করি।
+              </p>
+              <p>
+                Web Development এর পাশাপাশি আমি ইসলামিক শিক্ষায় Dawrah-e-Hadith
+                সম্পন্ন করেছি — এই দুটি পথ আমার চিন্তাকে সমৃদ্ধ করেছে।
+              </p>
+              <p>
+                আমি বিশ্বাস করি ভালো code হলো সেটা যা clean, purposeful এবং
+                দীর্ঘস্থায়ী।
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-6 reveal">
+            <ul class="info-list">
+              <li>
+                <span class="info-key">নাম</span
+                ><span class="info-val">Md. Abdul Kuddus</span>
+              </li>
+              <li>
+                <span class="info-key">অবস্থান</span
+                ><span class="info-val">Mymensingh, Bangladesh</span>
+              </li>
+              <li>
+                <span class="info-key">পেশা</span
+                ><span class="info-val">Freelance Web Developer</span>
+              </li>
+              <li>
+                <span class="info-key">স্তর</span
+                ><span class="info-val">Level-3 Freelancer</span>
+              </li>
+              <li>
+                <span class="info-key">ভাষা</span
+                ><span class="info-val">Bengali, English, Arabic</span>
+              </li>
+              <li>
+                <span class="info-key">Status</span
+                ><span class="info-val" style="color: var(--green)"
+                  >✅ Available</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section (using Bootstrap grid + custom card) -->
+    <section id="contact" class="py-5">
+      <div class="container">
+        <div class="contact-card reveal">
+          <h2>কাজ করতে আগ্রহী?</h2>
+          <p>
+            আপনার project নিয়ে কথা বলুন। আমি সবসময় নতুন সুযোগের জন্য প্রস্তুত।
+          </p>
+          <a
+            href="mailto:abdulkuddusbd.2026@gmail.com"
+            class="btn btn-primary-custom mb-4 d-inline-flex align-items-center gap-2"
+            >✉️ Email করুন</a
+          >
+          <div
+            class="social-links d-flex justify-content-center gap-3 flex-wrap"
+          >
+            <a href="https://github.com/AbdulKuddusBD" class="social-link-bs"
+              ><i class="bi bi-github"></i> GitHub</a
+            >
+            <a
+              href="https://linkedin.com/in/abdulkuddusbd"
+              class="social-link-bs"
+              ><i class="bi bi-linkedin"></i> LinkedIn</a
+            >
+            <a
+              href="https://facebook.com/hmabdulkuddus01"
+              class="social-link-bs"
+              ><i class="bi bi-facebook"></i> Facebook</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Back to top button -->
+    <button
+      type="button"
+      class="btn btn-danger btn-floating btn-lg"
+      id="btn-back-to-top"
+    >
+      <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <footer>
+      <p>Built with ❤️ by <span>Abdul Kuddus</span> · Bangladesh</p>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Button Click To Top -->
+    <script>
+      let mybutton = document.getElementById("btn-back-to-top");
+
+      // Show button when user scrolls down 20px
+      window.onscroll = function () {
+        scrollFunction();
+      };
+
+      function scrollFunction() {
+        if (
+          document.body.scrollTop > 20 ||
+          document.documentElement.scrollTop > 20
+        ) {
+          mybutton.style.display = "block";
+        } else {
+          mybutton.style.display = "none";
+        }
+      }
+
+      // When the user clicks, scroll to the top
+      mybutton.addEventListener("click", backToTop);
+
+      function backToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth", // Enables smooth scrolling
+        });
+      }
+    </script>
+    <!-- Live time update -->
+    <script>
+      function updateBDTime() {
+        const now = new Date();
+        const time = now.toLocaleTimeString("en-US", {
+          timeZone: "Asia/Dhaka",
+        });
+        const timeSpan = document.getElementById("bd-time");
+        if (timeSpan) timeSpan.innerText = time;
+      }
+      setInterval(updateBDTime, 1000);
+      updateBDTime();
+    </script>
+    <!-- Scroll reveal (unchanged) -->
+    <script>
+      const reveals = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e, i) => {
+            if (e.isIntersecting) {
+              setTimeout(() => e.target.classList.add("visible"), i * 80);
+              observer.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+      reveals.forEach((el) => observer.observe(el));
+    </script>
+  </body>
 </html>
