@@ -7,6 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <link rel="shortcut icon" type="image/x-icon" href="https://abdulkuddusbd.github.io/logo.png">
   <style>
     :root {
       --bg: #0a0a0f;
@@ -30,6 +31,15 @@
       font-family: 'DM Sans', sans-serif;
       overflow-x: hidden;
     }
+    body.light-mode {
+  --bg: #ffffff;
+  --bg2: #f7f7f9;
+  --card: #ffffff;
+  --text: #111111;
+  --muted: #555;
+  --border: rgba(0,0,0,0.1);
+  --glow: rgba(0,0,0,0.05);
+}
 
     /* ── Noise texture overlay ── */
     body::before {
@@ -74,6 +84,9 @@
       padding: 0.4rem 1rem !important;
       transition: color .25s;
       position: relative;
+    }
+    .nav-link.active {
+    color: var(--accent) !important;
     }
 
     .navbar-nav .nav-link::after {
@@ -765,7 +778,9 @@
 <!-- ══ NAVBAR ══ -->
 <nav class="navbar navbar-expand-lg fixed-top">
   <div class="container">
-    <a class="nav-brand navbar-brand" href="#hero">AK<span>.</span></a>
+    <a class="nav-brand navbar-brand" href="#hero">
+    <img class="" src="https://abdulkuddusbd.github.io/logo.png" alt="Logo" width="100" height="60" class="d-inline-block align-text-top">
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -777,6 +792,7 @@
         <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
         <li class="nav-item"><a class="nav-link" href="#resume">Resume</a></li>
         <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        <button onclick="toggleTheme()" class="btn-outline-gold ms-3">🌙</button>
       </ul>
     </div>
   </div>
@@ -801,16 +817,17 @@
         </div>
         <div class="hero-socials">
           <a href="mailto:abdulkuddusbd.dev@gmail.com" class="social-icon" title="Email"><i class="fas fa-envelope"></i></a>
-          <a href="tel:01339401066" class="social-icon" title="Phone"><i class="fas fa-phone"></i></a>
+          <a href="tel:+8801339401066" class="social-icon" title="Phone"><i class="fas fa-phone"></i></a>
           <a href="https://github.com/abdulkuddusbd" class="social-icon" title="GitHub" target="_blank"><i class="fab fa-github"></i></a>
-          <a href="https://linkedin.com" class="social-icon" title="LinkedIn" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-          <a href="https://fiverr.com" class="social-icon" title="Fiverr" target="_blank"><i class="fas fa-briefcase"></i></a>
+          <a href="https://linkedin.com/in/abdulkuddusbd" class="social-icon" title="LinkedIn" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+          <!--a href="https://fiverr.com" class="social-icon" title="Fiverr" target="_blank"><i class="fas fa-briefcase"></i></a-->
         </div>
       </div>
       <div class="col-lg-6">
         <div class="hero-avatar-wrap">
           <div class="hero-avatar-ring">
-            <div class="hero-avatar-inner">AK</div>
+            <div class="hero-avatar-inner">
+              <img src="./logo-round.png" class="img-fluid rounded-circle" style="max-width: 100%;"></div>
           </div>
           <div class="hero-badge">
             <span class="dot"></span> Open to Work
@@ -839,7 +856,7 @@
           <div class="info-item"><i class="fas fa-calendar info-icon"></i> <span><strong>DOB:</strong> February 5, 2006</span></div>
           <div class="info-item"><i class="fas fa-map-marker-alt info-icon"></i> <span>Enayet Nagar, Kurshipara, Ishwarganj, Mymensingh</span></div>
           <div class="info-item"><i class="fas fa-envelope info-icon"></i> <span>abdulkuddusbd.dev@gmail.com</span></div>
-          <div class="info-item"><i class="fas fa-phone info-icon"></i> <span>01339401066 / 01410899394</span></div>
+          <div class="info-item"><i class="fas fa-phone info-icon"></i> <span>+880 1339-401066 / +880 1410-899394</span></div>
           <div class="info-item"><i class="fas fa-tint info-icon"></i> <span><strong>Blood Group:</strong> B+</span></div>
           <div class="info-item"><i class="fas fa-language info-icon"></i> <span>Bengali (Native), English (Proficient)</span></div>
         </div>
@@ -1006,7 +1023,8 @@
             <div class="timeline-dot"></div>
             <div class="timeline-period">Completed</div>
             <div class="timeline-title">Dawrah-e-Hadith (Islamic Studies)</div>
-            <div class="timeline-org">Jamiatul Islah Al-Madania Ichhapur, Belanga, Tarail, Kishoreganj</div>
+            <div class="timeline-org">Jamiatul Islah Al-Madania Ichapashor-Belanka
+Tarail, Kishoreganj, Bangladesh</div>
             <div class="timeline-desc">
               Completed the comprehensive Dawrah-e-Hadith program — the highest level of Hadith study in the Dars-e-Nizami curriculum — demonstrating advanced scholarship, discipline, and research ability.
             </div>
@@ -1106,7 +1124,7 @@
           <div class="resume-header-role">Web Designer & Developer · Level-3 Freelancer</div>
           <div class="resume-contact-row">
             <span><i class="fas fa-envelope"></i> abdulkuddusbd.dev@gmail.com</span>
-            <span><i class="fas fa-phone"></i> 01339401066</span>
+            <span><i class="fas fa-phone"></i> +880 1339-401066</span>
             <span><i class="fas fa-map-marker-alt"></i> Ishwarganj, Mymensingh, Bangladesh</span>
             <span><i class="fab fa-github"></i> github.com/abdulkuddusbd</span>
             <span><i class="fab fa-linkedin"></i>linkedin.com/in/abdulkuddusbd</span>
@@ -1161,7 +1179,8 @@
             <div class="resume-exp-title">Dawrah-e-Hadith (Advanced Islamic Studies)</div>
             <div class="resume-exp-period">Completed</div>
           </div>
-          <div class="resume-exp-org">Jamiatul Islah Al-Madania Ichhapur · Belanga, Tarail, Kishoreganj, Bangladesh</div>
+          <div class="resume-exp-org">Jamiatul Islah Al-Madania Ichapashor-Belanka
+Tarail, Kishoreganj, Bangladesh</div>
           <ul class="resume-exp-list">
             <li>Completed the highest level of Hadith science in the Dars-e-Nizami curriculum</li>
             <li>Developed advanced research, critical analysis, and academic writing capabilities</li>
@@ -1223,7 +1242,7 @@
         <!-- References -->
         <div class="resume-section-title">References</div>
         <div style="font-size:.82rem;color:var(--muted);">
-          Guardian: <strong style="color:var(--text)">Md. Rafiqul Islam</strong> (Father · Farmer & Electrician) · Contact: 01733253658
+          Guardian: <strong style="color:var(--text)">Md. Rafiqul Islam</strong> (Father · Farmer & Electrician) · Contact: +880 1733-253658
         </div>
       </div>
 
@@ -1266,7 +1285,7 @@
             <div class="ci-icon"><i class="fas fa-phone"></i></div>
             <div>
               <div class="ci-label">Phone</div>
-              <div class="ci-value"><a href="tel:01339401066">01339401066</a> / <a href="tel:01410899394">01410899394</a></div>
+              <div class="ci-value"><a href="tel:+8801339401066">+880 1339-401066</a> / <a href="tel:+8801410899394">+880 1410-899394</a></div>
             </div>
           </div>
           <div class="contact-item">
@@ -1360,9 +1379,11 @@
       if (window.scrollY >= s.offsetTop - 120) current = s.id;
     });
     navLinks.forEach(l => {
-      l.style.color = l.getAttribute('href') === '#' + current
-        ? 'var(--accent)' : '';
-    });
+  l.classList.remove('active');
+  if (l.getAttribute('href') === '#' + current) {
+    l.classList.add('active');
+  }
+});
   });
 
   // Contact form
@@ -1441,7 +1462,7 @@
   <div class="role">Web Designer &amp; Developer &nbsp;·&nbsp; Level-3 Freelancer</div>
   <div class="contact-row">
     <span><i class="fas fa-envelope"></i> abdulkuddusbd.dev@gmail.com</span>
-    <span><i class="fas fa-phone"></i> 01339401066 / 01410899394</span>
+    <span><i class="fas fa-phone"></i> +880 1339-401066 / +880 1410-899394</span>
     <span><i class="fas fa-map-marker-alt"></i> Ishwarganj, Mymensingh, Bangladesh</span>
     <span><i class="fab fa-github"></i> github.com/abdulkuddusbd</span>
   </div>
@@ -1476,7 +1497,8 @@
   <div class="sec-title">Education</div>
   <div class="exp-block">
     <div class="exp-row"><div class="exp-title">Dawrah-e-Hadith (Advanced Islamic Studies)</div><div class="exp-period">Completed</div></div>
-    <div class="exp-org">Jamiatul Islah Al-Madania Ichhapur · Belanga, Tarail, Kishoreganj, Bangladesh</div>
+    <div class="exp-org">Jamiatul Islah Al-Madania Ichapashor-Belanka
+Tarail, Kishoreganj, Bangladesh</div>
     <ul>
       <li>Completed the highest level of Hadith science in the Dars-e-Nizami curriculum</li>
       <li>Developed advanced research, critical analysis, and academic writing capabilities</li>
@@ -1519,7 +1541,7 @@
   </div>
 
   <div class="sec-title">References</div>
-  <p><strong>Md. Rafiqul Islam</strong> (Father · Farmer &amp; Electrician) &nbsp;·&nbsp; Contact: 01733253658</p>
+  <p><strong>Md. Rafiqul Islam</strong> (Father · Farmer &amp; Electrician) &nbsp;·&nbsp; Contact: +880 1733-253658</p>
 </body>
 </html>`;
   }
@@ -1545,6 +1567,19 @@
 </script>
 
 <script>
+   function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+
+  localStorage.setItem(
+    'theme',
+    document.body.classList.contains('light-mode') ? 'light' : 'dark'
+  );
+}
+
+// load saved theme
+if (localStorage.getItem('theme') === 'light') {
+  document.body.classList.add('light-mode');
+}
     // নেভবারের সব লিংকে ক্লিক করার ইভেন্ট ধরা হচ্ছে
     document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
         link.addEventListener('click', () => {
